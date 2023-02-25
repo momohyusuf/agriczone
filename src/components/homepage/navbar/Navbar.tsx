@@ -5,7 +5,7 @@ import React from 'react';
 
 const Navbar = () => {
   return (
-    <nav className="p-2 bg-white fixed w-full shadow-md">
+    <nav className="p-2 bg-white z-10 fixed w-full shadow-md">
       <div className="max-w-7xl w-full mx-auto flex justify-between items-center">
         <Link href="/">
           <Image

@@ -7,7 +7,7 @@ const Index = () => {
   return (
     <section className="grid place-items-center h-screen">
       <div className="flex gap-10 flex-col lg:flex-row capitalize">
-        <div className="shadow-md tracking-wide p-10 text-center rounded-md space-y-6 text-2xl">
+        <div className="shadow-md hover:shadow-xl  transition-all duration-500 tracking-wide p-10 text-center rounded-md space-y-6 text-2xl">
           <p>Register as an Agro expert</p>
           <div className="flex justify-between items-center ">
             <Image
@@ -18,13 +18,13 @@ const Index = () => {
             />
             <Link
               href="/sign-up/agro-expert"
-              className="text-pigment-green rounded-sm bg-white p-2 shadow hover:bg-pigment-green transition-all duration-500 hover:text-white"
+              className="text-pigment-green rounded-sm bg-white  p-2 shadow hover:bg-pigment-green transition-all duration-500 hover:text-white"
             >
               <ArrowForwardIosIcon />
             </Link>
           </div>
         </div>
-        <div className="shadow-md tracking-wide text-2xl p-10 rounded-md space-y-6">
+        <div className="shadow-md hover:shadow-xl  transition-all duration-500 tracking-wide text-2xl p-10 rounded-md space-y-6">
           <p>Register as a trader</p>
           <div className="flex justify-between items-center ">
             <Image
