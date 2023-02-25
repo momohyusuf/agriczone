@@ -122,7 +122,7 @@ const AgroExpert = () => {
     <section className="grid py-36 place-items-center min-h-screen">
       {alert.isShown && <AlertBox />}
       <SuccessModal />
-      <div className="shadow-md p-1 md:p-4 fadeIn  mx-2 rounded-md bg-mint-cream m: md:w-[600px]">
+      <div className="shadow-md p-1 md:p-4 fadeIn  mx-2 rounded-md bg-mint-cream  sm:w-[600px]">
         <h1 className="text-3xl text-center text-pigment-green py-1 tracking-wider">
           Agro Expert
         </h1>

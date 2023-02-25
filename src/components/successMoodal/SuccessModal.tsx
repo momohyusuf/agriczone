@@ -50,12 +50,6 @@ export default function SuccessModal() {
       >
         <Fade in={modal?.isOpen}>
           <Box sx={style}>
-            <Typography
-              id="modal-modal-title"
-              className="text-xl text-pigment-green font-bold"
-            >
-              Account Created
-            </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {modal?.message}
             </Typography>
