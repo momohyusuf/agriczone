@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import Link from 'next/link';
 // miu components
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -15,15 +17,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 // ************************
-import Link from 'next/link';
 // ************************
-import axios from 'axios';
 import { states } from '@/utils/data/statesInNigeria';
 import { url } from '@/utils/url';
+import { validateRegisterInputs } from '@/utils/validateInputs';
 import { RootState } from '@/store';
 import { updateAlert, toggleModal } from '@/features/global/globalSlice';
 import AlertBox from '@/components/alert/AlertBox';
-import { validateRegisterInputs } from '@/utils/validateInputs';
 import SuccessModal from '@/components/successMoodal/SuccessModal';
 
 type FormDataProps = {
@@ -54,7 +54,7 @@ const AgroExpert = () => {
 
   const dispatch = useDispatch();
 
-  // //////////////////
+  // a function that handles show password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
@@ -63,7 +63,9 @@ const AgroExpert = () => {
     event.preventDefault();
   };
 
-  // ////////////////////////////////
+  //************************** */
+
+  // controlling the input
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, type, checked } = e.target;
 
@@ -72,6 +74,8 @@ const AgroExpert = () => {
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
+  // ******************************
+  // a function that submits the user information to the database
   const handleSubmit = async () => {
     if (validateRegisterInputs(formData)) {
       dispatch(
@@ -89,11 +93,20 @@ const AgroExpert = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${url}/api/v1/auth/create-agro-expert`,
+        `${url}/auth/register-agro-expert`,
         formData
       );
 
-      console.log(response);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        state: '',
+        password: '',
+        email: '',
+        field: '',
+        profilePicture: '',
+        acceptAgreement: false,
+      });
       setIsLoading(false);
       dispatch(
         toggleModal({
@@ -118,6 +131,7 @@ const AgroExpert = () => {
     }
   };
 
+  // **************************
   return (
     <section className="grid py-36 place-items-center min-h-screen">
       {alert.isShown && <AlertBox />}
