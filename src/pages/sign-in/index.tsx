@@ -71,10 +71,7 @@ const SignIn = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `${url}/api/v1/auth/login-agro-expert`,
-        formData
-      );
+      const response = await axios.post(`${url}/auth/login`, formData);
       setIsLoading(false);
       console.log(response);
     } catch (error) {
