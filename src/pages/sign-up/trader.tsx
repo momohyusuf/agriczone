@@ -90,11 +90,23 @@ const Trader = () => {
       );
       return;
     }
+    if (formData.agriculturalProducts.length <= 0) {
+      dispatch(
+        updateAlert({
+          title: 'Error',
+          isShown: true,
+          // @ts-ignore
+          message: 'Your agricultural products are required',
+          status: 'error',
+        })
+      );
+      return;
+    }
 
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${url}/auth/register-agro-expert`,
+        `${url}/auth/register-agro-trader`,
         formData
       );
 
@@ -104,7 +116,7 @@ const Trader = () => {
         state: '',
         password: '',
         email: '',
-        agriculturalProducts: '',
+        agriculturalProducts: [],
         profilePicture: '',
         acceptAgreement: false,
       });
@@ -254,10 +266,9 @@ const Trader = () => {
             size="small"
             id="tags-outlined"
             options={agriculturalProducts}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option}
             defaultValue={[agriculturalProducts[5]]}
             filterSelectedOptions
-            color="success"
             // @ts-ignore
             onChange={(event: any, newValue: string | null | []) => {
               // @ts-ignore
@@ -272,6 +283,7 @@ const Trader = () => {
                 {...params}
                 label="Agricultural Products"
                 placeholder="Select your agricultural products"
+                color="success"
               />
             )}
           />

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 const VerifyEmail = () => {
-  const [count, setCount] = React.useState(0);
   const router = useRouter();
   const { token, email } = router.query;
 

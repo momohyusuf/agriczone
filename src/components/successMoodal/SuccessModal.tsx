@@ -50,7 +50,7 @@ export default function SuccessModal() {
       >
         <Fade in={modal?.isOpen}>
           <Box sx={style}>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Typography id="modal-modal-description" className="text-slate-500">
               {modal?.message}
             </Typography>
           </Box>

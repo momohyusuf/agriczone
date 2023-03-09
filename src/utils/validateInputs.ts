@@ -9,6 +9,7 @@ type FormDataProps = {
   field?: string;
   products?: string;
   acceptAgreement: string;
+  agriculturalProducts: [];
 };
 
 const validateRegisterInputs = (formData: FormDataProps) => {
@@ -27,9 +28,7 @@ const validateRegisterInputs = (formData: FormDataProps) => {
   if (!validator.isLength(formData.state, { min: 2 })) {
     return 'Provide your state of residence';
   }
-  if (!validator.isLength(formData.field, { min: 2 })) {
-    return 'Your agricultural field is required';
-  }
+
   if (!formData.acceptAgreement) {
     return 'Please Accept our terms and conditions';
   }
@@ -43,4 +42,20 @@ const validateLoginInputs = (formData: FormDataProps) => {
     return 'Wrong password';
   }
 };
-module.exports = { validateRegisterInputs, validateLoginInputs };
+
+const validateAgriculturalField = (formData: FormDataProps) => {
+  if (formData.field.length < 2) {
+    return 'Your agricultural field is required';
+  }
+};
+const validateAgriculturalProducts = (formData: FormDataProps) => {
+  if (formData.agriculturalProducts.length < 0) {
+    return 'Your agricultural products are required';
+  }
+};
+module.exports = {
+  validateRegisterInputs,
+  validateLoginInputs,
+  validateAgriculturalProducts,
+  validateAgriculturalField,
+};

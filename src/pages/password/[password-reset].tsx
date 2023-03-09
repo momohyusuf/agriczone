@@ -5,7 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -15,33 +15,38 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import AlertBox from '@/components/alert/AlertBox';
 import { RootState } from '@/store';
-import { updateAlert } from '@/features/global/globalSlice';
-import { validateLoginInputs } from '@/utils/validateInputs';
+import { toggleModal, updateAlert } from '@/features/global/globalSlice';
+import validator from 'validator';
+import { useRouter } from 'next/router';
+import SuccessModal from '@/components/successMoodal/SuccessModal';
 
 type FormDataProps = {
-  email: string;
-  password: string;
+  newPassword: string;
+  confirmPassword: string;
 };
-const SignIn = () => {
+const PasswordReset = () => {
+  const router = useRouter();
   const [formData, setFormData] = React.useState<FormDataProps>({
-    email: '',
-    password: '',
+    newPassword: '',
+    confirmPassword: '',
   });
+  const { token, email } = router.query;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const alert = useSelector((state: RootState) => state.global.alert);
   const dispatch = useDispatch();
-  //
+
+  // hide and show
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
-  //
+
+  //************************ */
 
   //
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,13 +61,17 @@ const SignIn = () => {
   // ////////////////////////
 
   const handleSubmit = async () => {
-    if (validateLoginInputs(formData)) {
+    if (
+      !validator.isStrongPassword(formData.confirmPassword) ||
+      !validator.isStrongPassword(formData.newPassword) ||
+      formData.confirmPassword !== formData.newPassword
+    ) {
       dispatch(
         updateAlert({
           title: 'Error',
           isShown: true,
           // @ts-ignore
-          message: validateLoginInputs(formData),
+          message: 'Provide a strong password',
           status: 'error',
         })
       );
@@ -71,9 +80,18 @@ const SignIn = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${url}/auth/login`, formData);
+      const response = await axios.post(`${url}/auth/reset-password`, {
+        token,
+        email,
+        confirmPassword: formData.confirmPassword,
+      });
       setIsLoading(false);
-      console.log(response);
+      dispatch(
+        toggleModal({
+          isOpen: true,
+          message: response.data.message,
+        })
+      );
     } catch (error) {
       setIsLoading(false);
 
@@ -94,25 +112,15 @@ const SignIn = () => {
   // /////////////////////////////
   return (
     <>
+      <SuccessModal />
       <section className="grid place-items-center h-screen">
         {alert.isShown && <AlertBox />}
+
         <div className=" bg-mint-cream max-w-lg w-full shadow-md p-4 m-4 rounded-md">
           <h1 className="text-pigment-green text-2xl tracking-wide">
-            Log into your account
+            Password reset
           </h1>
           <Box className="space-y-6 my-6">
-            <TextField
-              id="outlined-multiline-flexible"
-              label="Email"
-              multiline
-              maxRows={4}
-              fullWidth
-              color="success"
-              size="small"
-              name="email"
-              onChange={handleInputs}
-              value={formData.email}
-            />
             <FormControl
               sx={{ width: '100%' }}
               color="success"
@@ -120,14 +128,34 @@ const SignIn = () => {
               size="small"
             >
               <InputLabel htmlFor="outlined-adornment-password">
-                Password
+                Create new password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={'password'}
+                name="newPassword"
+                onChange={handleInputs}
+                value={formData.newPassword}
+                label="create new password"
+              />
+            </FormControl>
+            {/* *********************** */}
+
+            <FormControl
+              sx={{ width: '100%' }}
+              color="success"
+              variant="outlined"
+              size="small"
+            >
+              <InputLabel htmlFor="outlined-adornment-password">
+                Confirm password
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
-                name="password"
+                name="confirmPassword"
                 onChange={handleInputs}
-                value={formData.password}
+                value={formData.confirmPassword}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -140,9 +168,12 @@ const SignIn = () => {
                     </IconButton>
                   </InputAdornment>
                 }
-                label="Password"
+                label="Confirm password"
               />
             </FormControl>
+            {formData.newPassword !== formData.confirmPassword && (
+              <small className="text-red-600">Password do not match</small>
+            )}
           </Box>
           <LoadingButton
             fullWidth
@@ -153,26 +184,12 @@ const SignIn = () => {
             className="bg-pigment-green"
             onClick={handleSubmit}
           >
-            Sign in
+            Submit
           </LoadingButton>
-          <p className="mt-6 text-center">
-            {' '}
-            Dont have an account yet?{' '}
-            <Link href="/sign-up" className="text-pigment-green">
-              Register
-            </Link>
-          </p>
-          <p className="mt-2 text-center">
-            {' '}
-            Forgot password?{' '}
-            <Link href="/forgot-password" className="text-pigment-green">
-              Reset
-            </Link>
-          </p>
         </div>
       </section>
     </>
   );
 };
 
-export default SignIn;
+export default PasswordReset;
