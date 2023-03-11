@@ -17,6 +17,7 @@ import AlertBox from '@/components/alert/AlertBox';
 import { RootState } from '@/store';
 import { updateAlert } from '@/features/global/globalSlice';
 import { validateLoginInputs } from '@/utils/validateInputs';
+import { updateUser } from '@/features/user/userSlice';
 
 type FormDataProps = {
   email: string;
@@ -71,9 +72,12 @@ const SignIn = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${url}/auth/login`, formData);
+      const { data } = await axios.post(`${url}/auth/login`, formData, {
+        withCredentials: true,
+      });
       setIsLoading(false);
-      console.log(response);
+      console.log(data);
+      dispatch(updateUser(data));
     } catch (error) {
       setIsLoading(false);
 
@@ -96,7 +100,7 @@ const SignIn = () => {
     <>
       <section className="grid place-items-center h-screen">
         {alert.isShown && <AlertBox />}
-        <div className=" bg-mint-cream max-w-lg w-full shadow-md p-4 m-4 rounded-md">
+        <div className=" fadeIn bg-mint-cream max-w-lg w-full shadow-md p-4 m-4 rounded-md">
           <h1 className="text-pigment-green text-2xl tracking-wide">
             Log into your account
           </h1>

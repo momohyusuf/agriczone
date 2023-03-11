@@ -6,8 +6,8 @@ import Link from 'next/link';
 const Index = () => {
   return (
     <section className="grid place-items-center h-screen">
-      <div className="flex gap-10 flex-col lg:flex-row capitalize">
-        <div className="shadow-md hover:shadow-xl  transition-all duration-500 tracking-wide p-10 text-center rounded-md space-y-6 text-2xl">
+      <div className="flex gap-10  flex-col lg:flex-row capitalize">
+        <div className="shadow-md hover:shadow-xl  transition-all duration-500 text-slate-700 p-10 text-center rounded-md space-y-6 text-2xl">
           <p>Register as an Agro expert</p>
           <div className="flex justify-between items-center ">
             <Image
@@ -24,7 +24,7 @@ const Index = () => {
             </Link>
           </div>
         </div>
-        <div className="shadow-md hover:shadow-xl  transition-all duration-500 tracking-wide text-2xl p-10 rounded-md space-y-6">
+        <div className="shadow-md hover:shadow-xl  transition-all duration-500 text-2xl p-10 rounded-md space-y-6">
           <p>Register as a trader</p>
           <div className="flex justify-between items-center ">
             <Image
